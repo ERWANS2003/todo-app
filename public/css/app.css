@@ -1,0 +1,667 @@
+/* ==========================================================================
+   Variables CSS
+   ========================================================================== */
+:root {
+    /* Couleurs */
+    --color-primary: #6A67CE; /* Violet */
+    --color-secondary: #E0E0E0; /* Gris clair pour secondaire */
+    --color-secondary-text: #555; /* Couleur de texte pour secondaire */
+    --color-danger: #D83B3B; /* Rouge */
+    --color-info: #2196F3; /* Bleu */
+    --color-success: #4CAF50; /* Vert par défaut */
+    --color-success-light: #5cb85c; /* Vert plus clair pour le bouton succès */
+
+    --color-text-dark: #333;
+    --color-text-light: #fff;
+    --color-background-light: #f4f7f6;
+    --color-background-card: #ffffff;
+    --color-border: #e0e0e0;
+    --color-shadow: rgba(0, 0, 0, 0.08); /* Ombre légère pour les cartes */
+    --color-input-shadow: rgba(0, 0, 0, 0.05); /* Ombre très subtile pour les inputs */
+
+    /* Espacements */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+
+    /* Rayons de bordure */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px; /* Nouveau rayon pour les inputs */
+}
+
+/* ==========================================================================
+   Styles de base & Typographie
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: var(--color-text-dark);
+    background-color: var(--color-background-light);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center; /* Centre le contenu horizontalement */
+    align-items: flex-start; /* Aligne le contenu en haut (si main-grid n'est pas flex-grow) */
+    padding: var(--spacing-xl);
+}
+
+/* ==========================================================================
+   Layout Principal (Main Grid)
+   ========================================================================== */
+.main-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr; /* Sidebar fixe, contenu principal flexible */
+    gap: var(--spacing-xl);
+    max-width: 1200px;
+    width: 100%;
+    margin: auto; /* Centre la grille dans le body */
+    align-items: flex-start; /* Aligne les éléments en haut de leur cellule de grille */
+}
+
+/* Styles pour les pages de formulaire et d'accueil/choix (où il n'y a pas de sidebar) */
+.main-grid.form-page,
+.main-grid.welcome-page {
+    grid-template-columns: 1fr; /* Passe à une seule colonne */
+    max-width: 600px; /* Limite la largeur du contenu */
+    height: 100vh; /* Permet le centrage vertical pour ces pages */
+    align-items: center; /* Centre le contenu verticalement dans la page */
+    padding: var(--spacing-xl) 0; /* Padding vertical, pas horizontal (géré par max-width/margin) */
+}
+
+
+aside.panel {
+    background-color: var(--color-background-card);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 15px var(--color-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+/* ==========================================================================
+   Panels & Titres
+   ========================================================================== */
+.panel {
+    background-color: var(--color-background-card);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 15px var(--color-shadow);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between; /* Par défaut aligne aux extrémités */
+    align-items: center;
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Centrage spécifique pour les titres de page de formulaire/accueil */
+.panel-header[style*="justify-content: center"],
+.panel.form-panel .panel-header,
+.panel.welcome-panel .panel-header,
+.panel.choice-panel .panel-header {
+    justify-content: center;
+    text-align: center; /* Assure le centrage du texte si pas flex */
+}
+
+
+.user-info {
+    border-bottom: none; /* Pas de bordure pour l'en-tête d'informations utilisateur */
+    margin-bottom: 0;
+}
+
+.panel-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+h3.panel-title {
+    font-size: 1.1rem;
+    color: var(--color-text-dark);
+}
+
+/* ==========================================================================
+   Boutons
+   ========================================================================== */
+.btn {
+    padding: var(--spacing-md) var(--spacing-lg); /* Augmenté le padding pour les boutons standards */
+    border: none;
+    border-radius: var(--border-radius-md); /* Peut être ajusté si vous voulez plus ou moins arrondi */
+    font-size: 1.05rem; /* Légèrement plus grand */
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    transition: all 0.2s ease-in-out;
+    text-decoration: none; /* Pour les boutons qui sont des liens */
+    white-space: nowrap; /* Empêche le texte de s'enrouler */
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.btn-primary:hover {
+    background-color: #5552a8; /* Violet légèrement plus foncé */
+}
+
+.btn-secondary {
+    background-color: var(--color-secondary); /* Gris clair */
+    color: var(--color-secondary-text); /* Texte plus foncé pour un meilleur contraste */
+}
+
+.btn-secondary:hover {
+    background-color: #d0d0d0; /* Gris légèrement plus foncé au survol */
+}
+
+.btn-success {
+    background-color: var(--color-success-light); /* Vert légèrement plus clair */
+    color: var(--color-text-light);
+}
+
+.btn-success:hover {
+    background-color: var(--color-success); /* Vert de base au survol */
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: var(--color-text-light);
+}
+
+.btn-danger:hover {
+    background-color: #b02a2a; /* Rouge plus foncé */
+}
+
+.btn-logout {
+    background: none;
+    border: none;
+    color: var(--color-text-dark);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.btn-logout:hover {
+    color: var(--color-danger);
+    background-color: rgba(216, 59, 59, 0.1);
+    transform: none; /* Annule la transformation générale du bouton */
+    box-shadow: none;
+}
+
+.btn-sm {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+.btn-lg {
+    padding: 1rem 2rem; /* Plus de padding */
+    font-size: 1.1rem; /* Texte plus grand */
+    border-radius: var(--border-radius-md); /* Bords légèrement plus arrondis pour un look plus doux */
+}
+
+.btn-clear-search {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--color-danger);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: var(--spacing-sm);
+    transition: color 0.2s ease-in-out;
+}
+
+.btn-clear-search:hover {
+    color: #9f2b2b;
+}
+
+/* ==========================================================================
+   Formulaires (éléments génériques, formulaires d'authentification/création)
+   ========================================================================== */
+.form-panel {
+    padding: var(--spacing-xl); /* Plus de padding pour les formulaires */
+}
+
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-dark);
+    font-size: 1rem;
+}
+
+.required-asterisk {
+    color: var(--color-danger);
+    font-weight: normal;
+    margin-left: 4px;
+}
+
+.form-input {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    font-size: 1.05rem;
+    outline: none;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 2px 4px var(--color-input-shadow);
+}
+
+.form-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(106, 103, 206, 0.2), 0 2px 4px var(--color-input-shadow);
+}
+
+textarea.form-input {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end; /* Par défaut aligne les boutons à droite */
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+/* Pour centrer les actions dans les formulaires d'authentification par exemple */
+.form-actions-centered {
+    justify-content: center;
+}
+
+.auth-form {
+    /* Styles spécifiques si besoin pour les formulaires de login/register */
+}
+
+/* Barre de recherche (spécifique à la sidebar) */
+.search-bar input[type="text"] {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.search-bar input[type="text"]:focus {
+    border-color: var(--color-primary);
+}
+
+
+/* ==========================================================================
+   Alertes
+   ========================================================================== */
+.alert {
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+}
+
+.alert-danger ul {
+    list-style: disc;
+    margin: 0;
+    padding-left: 20px;
+}
+
+.alert-danger li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.alert-danger li:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Listes de Tâches
+   ========================================================================== */
+.task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.task-item {
+    background-color: var(--color-background-card);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.task-item:hover {
+    box-shadow: 0 2px 10px var(--color-shadow);
+    border-color: var(--color-primary);
+}
+
+.task-item.completed {
+    background-color: #f0f0f0;
+    border-color: #c0c0c0;
+}
+
+.task-item.completed .task-title {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.task-content {
+    flex-grow: 1;
+}
+
+.task-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.task-description {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.task-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-left: var(--spacing-lg);
+}
+
+.no-tasks {
+    text-align: center;
+    color: #888;
+    padding: var(--spacing-lg);
+    font-style: italic;
+}
+
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-xl);
+}
+
+.pagination nav {
+    display: flex;
+    gap: var(--spacing-xs);
+    background-color: var(--color-background-card);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-xs);
+    box-shadow: 0 2px 5px var(--color-shadow);
+}
+
+.pagination .page-item {
+    list-style: none;
+}
+
+.pagination .page-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 35px;
+    height: 35px;
+    text-decoration: none;
+    color: var(--color-text-dark);
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    font-weight: 500;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    pointer-events: none;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #ccc;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   Modales (Popups)
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none; /* Caché par défaut */
+}
+
+.modal-content {
+    background-color: var(--color-background-card);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 8px 30px var(--color-shadow);
+    width: 90%;
+    max-width: 450px;
+    text-align: center; /* Centre le texte dans la modale */
+    animation: fadeInScale 0.3s ease-out forwards;
+}
+
+.modal-content h3 {
+    font-size: 1.5rem;
+    color: var(--color-danger);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centre le titre et son éventuelle icône */
+    gap: var(--spacing-xs);
+}
+
+.modal-content p {
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.5;
+    color: #555;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center; /* Centre les boutons d'action */
+    gap: var(--spacing-md);
+}
+
+/* ==========================================================================
+   Styles spécifiques aux pages (Accueil, Choix Auth, Login, Register)
+   ========================================================================== */
+.welcome-panel,
+.choice-panel {
+    text-align: center; /* Centre le texte par défaut dans ces panels */
+    padding: var(--spacing-xl) var(--spacing-xxl); /* Padding généreux */
+}
+
+.welcome-text,
+.choice-description {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: var(--spacing-xl);
+}
+
+.welcome-actions,
+.choice-button-wrapper {
+    margin-top: var(--spacing-lg); /* Espace au-dessus du bouton */
+    width: 100%; /* S'assure que le bouton peut prendre toute la largeur si besoin */
+    text-align: center; /* Pour les cas où le bouton n'est pas flex ou inline-flex centré */
+}
+
+/* Sections de choix (Login/Register) */
+.choice-sections-wrapper {
+    display: flex;
+    gap: var(--spacing-xl);
+    justify-content: center; /* Centre les cartes de choix */
+    flex-wrap: wrap; /* Permet aux cartes de passer à la ligne */
+    margin-bottom: var(--spacing-xl);
+}
+
+.choice-section {
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre le contenu à l'intérieur de chaque carte de choix */
+}
+
+.choice-section .panel-title {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Pied de page des panels (notamment pour l'auth) */
+.panel-footer {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+    text-align: center; /* Centre le texte dans le pied de page */
+    font-size: 0.95rem;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.panel-footer .link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.panel-footer .link:hover {
+    color: #5552a8;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ==========================================================================
+   Design Responsive
+   ========================================================================== */
+@media (max-width: 768px) {
+    .main-grid {
+        grid-template-columns: 1fr; /* Empile les panels sur les petits écrans */
+        padding: var(--spacing-md);
+        gap: var(--spacing-lg);
+    }
+
+    aside.panel {
+        width: 100%; /* Sidebar pleine largeur */
+        padding: var(--spacing-md);
+    }
+
+    .panel {
+        padding: var(--spacing-md);
+    }
+
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .task-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .choice-sections-wrapper {
+        flex-direction: column; /* Empile les cartes de choix verticalement */
+        align-items: center; /* Centre les cartes empilées */
+    }
+
+    .choice-section {
+        width: 100%;
+        max-width: 400px;
+    }
+}

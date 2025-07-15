@@ -11,25 +11,46 @@ class TasksController extends Controller
     /**
      * Afficher la liste des tâches
      */
-    public function index()
-{
-    $user = auth::user();
+    public function index(Request $request)
+    {
+        $user = Auth::user();
 
-    // Récupérer les tâches non terminées avec pagination
-    $activeTasks = Task::where('user_id', $user->id)
-        ->where('completed', false)
-        ->orderBy('created_at', 'desc')
-        ->paginate(5, ['*'], 'active_page');
+        // 🔎 Requête de base pour les tâches actives de l'utilisateur
+        $activeTasksQuery = Task::where('user_id', $user->id)
+            ->where('completed', false);
 
-    // Récupérer les tâches terminées avec pagination
-    $completedTasks = Task::where('user_id', $user->id)
-        ->where('completed', true)
-        ->orderBy('completed_at', 'desc')
-        ->paginate(5, ['*'], 'completed_page');
+        // 🔍 Requête de base pour les tâches terminées de l'utilisateur
+        $completedTasksQuery = Task::where('user_id', $user->id)
+            ->where('completed', true);
 
-    return view('tasks.index', compact('activeTasks', 'completedTasks'));
-}
+        // 🔍 Si une recherche est effectuée, appliquer le filtre aux deux requêtes
+        if ($request->filled('search')) {
+            $search = $request->search;
 
+            $activeTasksQuery->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                      ->orWhere('description', 'like', '%' . $search . '%');
+            });
+
+            $completedTasksQuery->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                      ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        // 📄 Récupération des tâches actives avec pagination
+        $activeTasks = $activeTasksQuery
+            ->orderBy('created_at', 'desc')
+            ->paginate(5, ['*'], 'active_page');
+
+        // ✅ Récupération des tâches terminées avec pagination
+        $completedTasks = $completedTasksQuery
+            ->orderBy('completed_at', 'desc')
+            ->paginate(5, ['*'], 'completed_page');
+
+        // 📦 On passe les deux jeux de données à la vue
+        return view('tasks.index', compact('activeTasks', 'completedTasks'));
+    }
 
     /**
      * Afficher le formulaire de création d'une tâche
@@ -42,28 +63,24 @@ class TasksController extends Controller
     /**
      * Enregistrer une nouvelle tâche
      */
-   public function store(Request $request)
-{
-    $validated = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'nullable|max:1000',
-    ]);
+    public function store(Request $request)
+    {
+        // Validation des données
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'nullable|max:1000',
+        ]);
 
-    Task::create([
-    'title' =>  $request->title,
-    'description' => $request->description,
-    'user_id' => Auth::id(),
-    'completed' => false,
-]);
+        Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => Auth::id(),
+            'completed' => false,
+        ]);
 
-    return redirect()->route('tasks.index')
-                    ->with('success', 'Tâche créée avec succès !');
-}
-
-    /**
-     * Afficher une tâche spécifique
-     */
-
+        return redirect()->route('tasks.index')
+                        ->with('success', 'Tâche créée avec succès !');
+    }
 
     /**
      * Afficher le formulaire d'édition d'une tâche
@@ -88,6 +105,7 @@ class TasksController extends Controller
             abort(403, 'Accès non autorisé');
         }
 
+        // Validation des données
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'nullable|max:1000',
@@ -129,28 +147,11 @@ class TasksController extends Controller
         }
 
         $task->update([
-            'completed' => !$task->completed
+            'completed' => !$task->completed,
+            'completed_at' => !$task->completed ? now() : null,
         ]);
 
         return redirect()->route('tasks.index')
                         ->with('success', 'Statut de la tâche mis à jour !');
     }
-
-
-
-
-// Ou si vous préférez une approche plus simple :
-public function toggleComplete(Task $task)
-{
-    if ($task->user_id !== auth::id()) {
-        abort(403);
-    }
-
-    $task->update([
-        'completed' => !$task->completed,
-        'completed_at' => !$task->completed ? now() : null,
-    ]);
-
-    return back();
-}
 }

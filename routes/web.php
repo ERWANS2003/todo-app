@@ -53,6 +53,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tasks/{task}', [TasksController::class, 'destroy'])->name('tasks.destroy');
     Route::patch('/tasks/{task}/toggle', [TasksController::class, 'toggleComplete'])
     ->name('tasks.toggle');
+    Route::patch('/tasks/{task}', [TasksController::class, 'toggle'])->name('tasks.toggle');
+    Route::get('/tasks', [TasksController::class, 'index'])->name('tasks.index');
+
     // Route supplémentaire pour basculer le statut d'une tâche
     Route::patch('/tasks/{task}/toggle', [TasksController::class, 'toggle'])->name('tasks.toggle');
 
