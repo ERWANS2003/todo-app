@@ -1,57 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <title>Todo App</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px;
-            font-size: 16px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .text-center {
-            text-align: center;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    {{-- Supprimé : <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/dist/phosphor.js"></script> --}}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Bienvenue dans votre Todo App</h1>
-        <p class="text-center">Gérez vos tâches quotidiennes efficacement.</p>
+    <div class="main-grid welcome-page"> {{-- Utilise main-grid pour le centrage, et welcome-page pour des ajustements spécifiques --}}
 
-        <div class="text-center">
-<!-- Au lieu de route('tasks.index') -->
-<a href="{{ Auth::check() ? route('tasks.index') : route('auth.choice') }}"class=" btn btn-primary btn-lg">
-    Voir les tâches
-</a>
-        </div>
+        <main> {{-- Le contenu principal sera dans le 'main' --}}
+
+            <div class="panel welcome-panel"> {{-- Un panel pour encapsuler le contenu d'accueil --}}
+                <div class="panel-header" style="justify-content: center; border-bottom: none;"> {{-- Centrer le titre et pas de bordure --}}
+                    <h1 class="panel-title" style="font-size: 2rem;">Bienvenue dans votre Todo App</h1>
+                </div>
+
+                <p class="welcome-text">Gérez vos tâches quotidiennes efficacement.</p>
+
+                <div class="welcome-actions"> {{-- Nouvelle div pour centrer le bouton --}}
+                    <a href="{{ Auth::check() ? route('tasks.index') : route('auth.choice') }}" class="btn btn-primary btn-lg">
+                        Voir les tâches
+                    </a>
+                </div>
+            </div>
+
+        </main>
     </div>
 </body>
 </html>

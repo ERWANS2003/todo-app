@@ -1,125 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <title>Modifier la Tâche - Todo App</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 500px;
-            margin: 50px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: bold;
-        }
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin-right: 10px;
-            display: inline-block;
-            text-align: center;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .form-actions {
-            text-align: center;
-            margin-top: 30px;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Modifier la tâche</h1>
+    <div class="main-grid form-page"> {{-- Utilise main-grid pour le centrage, et form-page pour des ajustements spécifiques --}}
 
-        @if($errors->any())
-            <div class="alert">
-                <ul style="margin: 0; padding-left: 20px;">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        <main> {{-- Le contenu principal sera dans le 'main' pour la cohérence du layout --}}
+
+            <div class="panel form-panel"> {{-- Un panel pour encapsuler le formulaire --}}
+                <div class="panel-header">
+                    <h2 class="panel-title">Modifier la tâche</h2>
+                </div>
+
+                @if($errors->any())
+                    <div class="alert alert-danger"> {{-- Utilise alert-danger pour les erreurs --}}
+                        <ul style="margin: 0; padding-left: 20px;">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('tasks.update', $task) }}" class="task-form"> {{-- Ajout d'une classe pour le formulaire --}}
+                    @csrf
+                    @method('PUT')
+
+                    <div class="form-group">
+                        <label for="title">Titre de la tâche *</label>
+                        <input type="text" id="title" name="title" value="{{ old('title', $task->title) }}"
+                               placeholder="Ex: Faire les courses" required class="form-input"> {{-- Ajout de classe pour input --}}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description (optionnel)</label>
+                        <textarea id="description" name="description"
+                                  placeholder="Décrivez votre tâche en détail..." class="form-input">{{ old('description', $task->description) }}</textarea> {{-- Ajout de classe pour textarea --}}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                        <a href="{{ route('tasks.index') }}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
             </div>
-        @endif
 
-        <form method="POST" action="{{ route('tasks.update', $task) }}">
-            @csrf
-            @method('PUT')
-
-            <div class="form-group">
-                <label for="title">Titre de la tâche *</label>
-                <input type="text" id="title" name="title" value="{{ old('title', $task->title) }}"
-                       placeholder="Ex: Faire les courses" required>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Description (optionnel)</label>
-                <textarea id="description" name="description"
-                          placeholder="Décrivez votre tâche en détail...">{{ old('description', $task->description) }}</textarea>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                <a href="{{ route('tasks.index') }}" class="btn btn-secondary">Annuler</a>
-            </div>
-        </form>
+        </main>
     </div>
 </body>
 </html>
